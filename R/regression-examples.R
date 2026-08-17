@@ -131,4 +131,16 @@ tbl_merge(list(tbl_no_int, tbl_int),
   tab_spanner = c("**Model 1**", "**Model 2**")
 )
 
+#Create a univariate regression table looking at the association between sex (sex_cat) as the x = variable and each of nsibs, sleep_wkdy, and sleep_wknd, and income
+tbl_uvregression(
+	nlsy,
+	x = sex_cat,
+	include = c(
+		nsibs, sleep_wkdy,
+		sleep_wknd, income
+	),
+	method = lm
+)
 
+#Poisson model
+poisson <- glm(nsibs ~ sex_cat + eyesight_cat + age_bir, family = poisson, data = nlsy)
