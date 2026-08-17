@@ -1,5 +1,7 @@
 library(tidyverse)
 library(gtsummary)
+#install.packages("tidyverse")
+install.packages("vctrs")
 
 # Load and clean data
 nlsy_cols <- c(
@@ -18,6 +20,8 @@ nlsy <- read_csv(here::here("data", "raw", "nlsy.csv"),
     eyesight_cat = factor(eyesight, labels = c("Excellent", "Very good", "Good", "Fair", "Poor")),
     glasses_cat = factor(glasses, labels = c("No", "Yes"))
   )
+
+
 
 
 # simple table
@@ -81,4 +85,61 @@ tbl_summary(
   # add a caption
   modify_caption("**Participant characteristics**")
 
+# table that includes income and sleep variable
+tbl_summary(
+	nlsy,
+	by = sex_cat,
+	include = c (region_cat, race_eth_cat, income, sleep_wkdy, sleep_wknd)
+)
 
+#labeling the table 1 nicely
+tbl_summary(
+	nlsy,
+	by = sex_cat,
+	include = c (region_cat, race_eth_cat, income, sleep_wkdy, sleep_wknd),
+	label = list(
+		race_eth_cat ~ "Race/ethnicity",
+		income ~ "Income",
+		region_cat ~ "Region",
+		sleep_wkdy ~ "Sleep on Weekday",
+		sleep_wknd ~ "Sleep on Weekend"
+	),
+	missing_text = "Missing"
+) |>
+	add_p(test = list(
+		all_continuous() ~ "t.test",
+		all_categorical() ~ "chisq.test"
+)) |>
+		add_overall(col_label = "**Total** N = {N}")
+
+#income 10th & 90th percentiles
+tbl_summary(
+	nlsy,
+	include = c (region_cat, race_eth_cat, income, sleep_wkdy, sleep_wknd),
+
+	by = sex_cat,
+
+
+	digits = list(income ~ 3, starts_with("sleep") ~ 1),
+	statistic = list (income ~ "{p10}, {p90}", starts_with("sleep") ~ {min}, {max}),
+
+	label = list(
+		race_eth_cat ~ "Race/ethnicity",
+		income ~ "Income",
+		region_cat ~ "Region",
+		sleep_wkdy ~ "Sleep on Weekday",
+		sleep_wknd ~ "Sleep on Weekend"
+	),
+	missing_text = "Missing"
+) |>
+	add_p(test = list(
+		all_continuous() ~ "t.test",
+		all_categorical() ~ "chisq.test"
+	)) |>
+	add_overall(col_label = "**Total** N = {N}")
+
+#add footnote
+modify_footnote_body(footnote = https://www.nlsinfo.org/content/cohorts/nlsy79/topical-guide/household/race-ethnicity-immigration-data
+										 columns = "label",
+
+)
