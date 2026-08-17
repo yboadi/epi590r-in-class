@@ -1,3 +1,3 @@
 # EPI590R repo
 
-This repository belongs to Yvonne Boadi
+This repository belongs to Yvonne Boadi.
