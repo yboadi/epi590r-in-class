@@ -143,4 +143,17 @@ tbl_uvregression(
 )
 
 #Poisson model
-poisson <- glm(nsibs ~ sex_cat + eyesight_cat + age_bir, family = poisson, data = nlsy)
+poisson_model <- glm(nsibs ~ sex_cat + eyesight_cat + income, family = poisson(), data = nlsy)
+
+tbl_regression(
+	poisson_model,
+	exponentiate = TRUE,
+	label = list(
+		sex_cat ~ "Sex",
+		eyesight_cat ~ "Eyesight",
+		income ~ "Income (USD)"
+	)
+)
+
+#log - binomial model
+logbionmial_model <- glm(glasses ~ eyesight_cat + sex_cat, data = nlsy, family = binomial(link = "log"))

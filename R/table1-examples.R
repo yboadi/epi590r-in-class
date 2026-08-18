@@ -1,6 +1,6 @@
 library(tidyverse)
 library(gtsummary)
-#install.packages("tidyverse")
+install.packages("tidyverse")
 install.packages("vctrs")
 
 # Load and clean data
