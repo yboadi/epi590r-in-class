@@ -5,6 +5,7 @@ execute:
   echo: false 
   error: true 
 ---
+We’re using some data from the National Longitudinal Survey of Youth 1979, a cohort of American young adults aged 14-22 at enrollment in 1979. They continue to be followed to this day, and there is a wealth of publicly available data online. I’ve downloaded the answers to a survey question about whether respondents wear glasses, a scale about their eyesight with glasses, their (NLSY-assigned 😒) race/ethnicity, their sex (presumably at birth, but unclear), their family’s income in 1979, and their age at the birth of their first child.
 
 ```{r}
 #| message: false 
@@ -61,3 +62,22 @@ tbl_summary(
               eyesight_cat, glasses, age_bir))
 ```
 
+```{r}
+#| label: tbl-sleep
+#| tbl-cap: "This is a table of a dataframe"
+
+tbl_summary(
+  nlsy,
+  include = c(starts_with("sleep"), sex_cat),
+  					by = region_cat,
+  label = list(
+    sleep_wknd ~ "Sleep on Weekend",
+    sleep_wkdy ~ "Sleep on Weekday",
+    sex_cat ~ "Sex"),
+     missing_text = "Missing") |>
+  add_overall()
+
+
+              
+```
+@tbl-sleep shows the descriptive statistics about sleep
