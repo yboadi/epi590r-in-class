@@ -66,7 +66,7 @@ tbl_summary(
 #| label: tbl-sleep
 #| tbl-cap: "This is a table of a dataframe"
 
-tbl_summary(
+sleep_table <- tbl_summary(
   nlsy,
   include = c(starts_with("sleep"), sex_cat),
   					by = region_cat,
@@ -77,7 +77,19 @@ tbl_summary(
      missing_text = "Missing") |>
   add_overall()
 
-
-              
+sleep_table
 ```
 @tbl-sleep shows the descriptive statistics about sleep
+```{r}
+median(nlsy$sleep_wknd, na.rm = TRUE)
+
+median_sleep <- median(nlsy$sleep_wknd, na.rm = TRUE)
+```
+The median of hours of sleep in the weekend is `r median_sleep`.
+
+```{r}
+sleep_table$table_body
+inline_text(sleep_table, variable = "sleep_wknd", column = "stat_0")
+```
+
+In the sample, the average sleep on weekends was `r inline_text(sleep_table, variable = "sleep_wknd", column = "stat_0")`
